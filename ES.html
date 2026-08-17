@@ -1,0 +1,1704 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¿Dónde invertirías? — Opportunity Analysis | UNAB</title>
+<style>
+/* ===== RESET & BASE ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --unab-navy:#002B5C;
+  --unab-gold:#C8992A;
+  --accent:#1A6FBF;
+  --accent-light:#E8F1FB;
+  --green:#1A8A5A;
+  --green-light:#E6F5EE;
+  --red:#C0392B;
+  --red-light:#FDEDEB;
+  --amber:#E07B00;
+  --amber-light:#FEF3E2;
+  --gray-50:#F8F9FA;
+  --gray-100:#F1F3F5;
+  --gray-200:#E9ECEF;
+  --gray-300:#DEE2E6;
+  --gray-500:#6C757D;
+  --gray-700:#495057;
+  --gray-900:#212529;
+  --radius:12px;
+  --radius-sm:8px;
+  --shadow:0 2px 12px rgba(0,0,0,.08);
+  --shadow-md:0 4px 24px rgba(0,0,0,.12);
+  --transition:0.2s ease;
+}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--gray-50);color:var(--gray-900);line-height:1.6;min-height:100vh}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* ===== SKIP LINK ===== */
+.skip-link{position:absolute;top:-9999px;left:0;background:var(--unab-navy);color:#fff;padding:.5rem 1rem;z-index:9999;border-radius:0 0 var(--radius-sm) 0;text-decoration:none}
+.skip-link:focus{top:0}
+
+/* ===== INSTITUTIONAL HEADER ===== */
+.institutional-header{background:var(--unab-navy);color:#fff;padding:1rem 1.5rem;display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap}
+.institutional-header img{height:52px;width:auto;object-fit:contain}
+.institutional-header .inst-text h1{font-size:1rem;font-weight:700;letter-spacing:.01em;margin:0}
+.institutional-header .inst-text p{font-size:.8rem;opacity:.85;margin:0}
+@media(max-width:480px){.institutional-header{justify-content:center;text-align:center}.institutional-header img{height:40px}}
+
+/* ===== STICKY DASHBOARD ===== */
+.sticky-dashboard{position:sticky;top:0;z-index:100;background:#fff;border-bottom:2px solid var(--gray-200);box-shadow:var(--shadow);padding:.75rem 1.5rem}
+.dashboard-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.dashboard-round{font-weight:700;font-size:.95rem;color:var(--unab-navy)}
+.dashboard-round span{display:inline-block;background:var(--unab-navy);color:#fff;border-radius:20px;padding:.2rem .75rem;margin-left:.4rem;font-size:.85rem}
+.dashboard-points{display:flex;gap:1.25rem;align-items:center}
+.point-pill{display:flex;align-items:center;gap:.4rem;font-size:.85rem;font-weight:600}
+.point-pill .val{font-size:1.1rem;font-weight:800}
+.point-pill.used .val{color:var(--accent)}
+.point-pill.avail .val{color:var(--green)}
+.progress-bar-wrap{flex:1;min-width:120px;max-width:220px}
+.progress-bar-track{background:var(--gray-200);border-radius:99px;height:8px;overflow:hidden}
+.progress-bar-fill{background:linear-gradient(90deg,var(--accent),var(--unab-gold));height:100%;border-radius:99px;transition:width .4s ease}
+.progress-steps{display:flex;gap:.3rem;margin-top:.3rem;justify-content:center}
+.step-dot{width:10px;height:10px;border-radius:50%;background:var(--gray-300);transition:.2s}
+.step-dot.active{background:var(--accent)}
+.step-dot.done{background:var(--green)}
+
+/* ===== MAIN CONTENT ===== */
+main{max-width:1100px;margin:0 auto;padding:1.5rem 1rem 3rem}
+section{margin-bottom:2rem}
+
+/* ===== INTRO ===== */
+.intro-box{background:linear-gradient(135deg,var(--unab-navy) 0%,#1a3f78 100%);color:#fff;border-radius:var(--radius);padding:2rem;text-align:center}
+.intro-box h2{font-size:1.6rem;margin-bottom:.5rem}
+.intro-box .subtitle{font-size:1rem;opacity:.85;font-style:italic;margin-bottom:1.25rem}
+.intro-box .instruction{background:rgba(255,255,255,.12);border-radius:var(--radius-sm);padding:1rem 1.25rem;font-size:.95rem;line-height:1.7;text-align:left}
+.intro-box .warning{margin-top:.75rem;font-size:.85rem;opacity:.8;font-style:italic}
+.badge-simulated{display:inline-block;background:rgba(200,153,42,.3);border:1px solid var(--unab-gold);color:var(--unab-gold);border-radius:20px;padding:.2rem .75rem;font-size:.75rem;font-weight:600;margin-top:1rem}
+
+/* ===== OPPORTUNITY CARDS ===== */
+.cards-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem}
+@media(max-width:700px){.cards-grid{grid-template-columns:1fr}}
+
+.opp-card{background:#fff;border:2px solid var(--gray-200);border-radius:var(--radius);box-shadow:var(--shadow);transition:border-color var(--transition),box-shadow var(--transition);overflow:hidden}
+.opp-card:focus-within{outline:3px solid var(--accent);outline-offset:2px}
+.opp-card.has-investment{border-color:var(--accent)}
+.opp-card.selected{border-color:var(--unab-gold);box-shadow:0 0 0 3px rgba(200,153,42,.2)}
+
+.card-header{padding:1.1rem 1.1rem .75rem;display:flex;align-items:flex-start;gap:.75rem}
+.card-icon{flex-shrink:0;width:52px;height:52px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center}
+.card-title-area h3{font-size:1rem;font-weight:700;color:var(--unab-navy);margin:0}
+.card-pitch{font-size:.88rem;color:var(--gray-700);margin:.25rem 0 0;font-style:italic;line-height:1.5}
+
+.card-invest-area{padding:.5rem 1.1rem 1rem;border-top:1px solid var(--gray-100)}
+.invest-controls{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.invest-controls label{font-size:.8rem;font-weight:600;color:var(--gray-700);white-space:nowrap}
+.btn-adjust{background:var(--gray-100);border:1px solid var(--gray-300);border-radius:var(--radius-sm);padding:.3rem .65rem;font-size:.85rem;font-weight:700;cursor:pointer;transition:.15s;min-width:36px}
+.btn-adjust:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-adjust:focus{outline:2px solid var(--accent);outline-offset:2px}
+.invest-value{font-size:1.2rem;font-weight:800;color:var(--accent);min-width:2.5rem;text-align:center}
+.invest-delta{font-size:.78rem;font-weight:600;padding:.1rem .4rem;border-radius:20px;margin-left:.3rem}
+.delta-up{background:#e6f5ee;color:var(--green)}
+.delta-down{background:#fdedeb;color:var(--red)}
+.delta-neutral{background:var(--gray-100);color:var(--gray-500)}
+.invest-slider{width:100%;margin-top:.5rem;accent-color:var(--accent)}
+
+/* View details button */
+.btn-view-detail{width:100%;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius-sm);padding:.5rem;font-size:.83rem;font-weight:600;color:var(--gray-700);cursor:pointer;transition:.15s;margin-top:.5rem}
+.btn-view-detail:hover{background:var(--accent-light);color:var(--accent);border-color:var(--accent)}
+.btn-view-detail:focus{outline:2px solid var(--accent);outline-offset:2px}
+
+/* Reveal panel inside card */
+.reveal-panel{padding:.75rem 1.1rem 1rem;border-top:2px solid var(--gray-200);background:var(--gray-50);display:none}
+.reveal-panel.open{display:block}
+.reveal-panel h4{font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--accent);margin-bottom:.6rem}
+.reveal-list{list-style:none;padding:0}
+.reveal-list li{padding:.35rem 0;border-bottom:1px solid var(--gray-200);font-size:.87rem;line-height:1.5}
+.reveal-list li:last-child{border-bottom:none}
+.reveal-list li::before{content:"▸";color:var(--accent);margin-right:.5rem;font-size:.75rem}
+.reveal-question{margin-top:.75rem;padding:.6rem .85rem;background:rgba(26,111,191,.08);border-left:3px solid var(--accent);border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:.88rem;font-style:italic;color:var(--gray-900)}
+.breakeven-box{margin:.75rem 0;background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius-sm);padding:.75rem 1rem}
+.breakeven-box p{font-size:.83rem;color:var(--gray-700);margin:.2rem 0}
+.breakeven-box .be-formula{font-family:monospace;font-size:.88rem;color:var(--unab-navy);font-weight:600}
+.capacity-table{width:100%;border-collapse:collapse;font-size:.83rem;margin-top:.5rem}
+.capacity-table td{padding:.3rem .5rem;border-bottom:1px solid var(--gray-200)}
+.capacity-table td:first-child{font-weight:600;color:var(--gray-700)}
+.cap-high{color:var(--green);font-weight:700}
+.cap-mid{color:var(--amber);font-weight:700}
+.cap-low{color:var(--red);font-weight:700}
+
+/* ===== ROUND CONTROLS ===== */
+.round-controls{text-align:center}
+.btn-primary{background:var(--unab-navy);color:#fff;border:none;border-radius:var(--radius-sm);padding:.8rem 2rem;font-size:1rem;font-weight:700;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:.5rem}
+.btn-primary:hover{background:#003d80}
+.btn-primary:focus{outline:3px solid var(--unab-gold);outline-offset:2px}
+.btn-primary:disabled{background:var(--gray-300);cursor:not-allowed}
+.btn-secondary{background:#fff;color:var(--unab-navy);border:2px solid var(--unab-navy);border-radius:var(--radius-sm);padding:.7rem 1.5rem;font-size:.95rem;font-weight:600;cursor:pointer;transition:.15s}
+.btn-secondary:hover{background:var(--unab-navy);color:#fff}
+.btn-secondary:focus{outline:3px solid var(--unab-gold);outline-offset:2px}
+.btn-reveal{background:linear-gradient(135deg,var(--unab-gold),#e0aa30);color:#fff;border:none;border-radius:var(--radius-sm);padding:.8rem 2rem;font-size:1rem;font-weight:700;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:.5rem}
+.btn-reveal:hover{filter:brightness(1.08)}
+.btn-reveal:focus{outline:3px solid var(--unab-navy);outline-offset:2px}
+.btn-danger{background:var(--gray-100);color:var(--gray-700);border:1px solid var(--gray-300);border-radius:var(--radius-sm);padding:.6rem 1.25rem;font-size:.9rem;font-weight:600;cursor:pointer;transition:.15s}
+.btn-danger:hover{background:var(--red-light);color:var(--red);border-color:var(--red)}
+.btn-danger:focus{outline:2px solid var(--red);outline-offset:2px}
+
+.controls-row{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-top:.75rem}
+
+/* Feedback */
+.feedback-box{background:var(--accent-light);border:1px solid rgba(26,111,191,.25);border-radius:var(--radius-sm);padding:.85rem 1.1rem;font-size:.9rem;font-style:italic;color:var(--gray-900);margin-top:1rem;text-align:left}
+.feedback-box.success{background:var(--green-light);border-color:var(--green)}
+.alert-box{background:var(--red-light);border:1px solid var(--red);border-radius:var(--radius-sm);padding:.7rem 1rem;font-size:.88rem;color:var(--red);margin-top:.75rem}
+
+/* ===== FINAL DECISION ===== */
+.final-decision-section{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.5rem;display:none}
+.final-decision-section.open{display:block}
+.final-decision-section h2{color:var(--unab-navy);margin-bottom:1rem;font-size:1.2rem}
+.decision-card-row{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-top:.75rem}
+@media(max-width:600px){.decision-card-row{grid-template-columns:1fr}}
+.decision-card{background:#fff;border:2px solid var(--gray-200);border-radius:var(--radius-sm);padding:.85rem 1rem;cursor:pointer;transition:.15s;text-align:center}
+.decision-card:hover{border-color:var(--accent)}
+.decision-card:focus{outline:2px solid var(--accent);outline-offset:2px}
+.decision-card.selected-go{border-color:var(--green);background:var(--green-light)}
+.decision-card.selected-modify{border-color:var(--accent);background:var(--accent-light)}
+.decision-card.selected-wait{border-color:var(--amber);background:var(--amber-light)}
+.decision-card.selected-nogo{border-color:var(--red);background:var(--red-light)}
+.decision-card .dec-label{font-weight:800;font-size:1.05rem}
+.decision-card .dec-desc{font-size:.8rem;color:var(--gray-500);margin-top:.2rem}
+.decision-opp-name{font-size:.95rem;font-weight:700;color:var(--unab-navy);margin-bottom:.5rem}
+
+/* ===== EVOLUTION CHART ===== */
+.evolution-section{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.5rem;display:none}
+.evolution-section.open{display:block}
+.evolution-section h2{color:var(--unab-navy);margin-bottom:1.25rem;font-size:1.2rem}
+.evo-chart{display:flex;flex-direction:column;gap:.75rem}
+.evo-row{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+.evo-label{font-size:.85rem;font-weight:700;width:130px;flex-shrink:0;color:var(--gray-700)}
+.evo-bars{display:flex;gap:.4rem;align-items:flex-end;flex:1}
+.evo-bar-wrap{display:flex;flex-direction:column;align-items:center;gap:.2rem;flex:1}
+.evo-bar{border-radius:4px 4px 0 0;min-height:4px;width:100%;transition:height .4s ease}
+.evo-bar-val{font-size:.75rem;font-weight:700;color:var(--gray-700)}
+.evo-bar-round{font-size:.7rem;color:var(--gray-500)}
+.evo-legend{display:flex;gap:.75rem;font-size:.78rem;flex-wrap:wrap;margin-bottom:.75rem}
+.evo-legend span{display:flex;align-items:center;gap:.3rem}
+.evo-legend-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+
+/* ===== CONCEPT MAP ===== */
+.concept-section{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.5rem;display:none}
+.concept-section.open{display:block}
+.concept-section h2{color:var(--unab-navy);margin-bottom:1.25rem;font-size:1.2rem}
+.concept-flow{display:flex;align-items:center;justify-content:center;gap:.5rem;flex-wrap:wrap;margin:.75rem 0 1.25rem}
+.concept-node{background:var(--unab-navy);color:#fff;border-radius:var(--radius-sm);padding:.55rem 1rem;font-size:.82rem;font-weight:700;text-align:center;opacity:0;transform:translateY(10px);transition:opacity .4s ease,transform .4s ease}
+.concept-node.visible{opacity:1;transform:translateY(0)}
+.concept-node.gold{background:var(--unab-gold)}
+.concept-arrow{color:var(--gray-400);font-size:1.25rem;opacity:0;transition:opacity .4s .15s}
+.concept-arrow.visible{opacity:1}
+.concept-def-box{margin-top:.75rem}
+.concept-def{padding:.5rem .85rem;border-left:3px solid var(--unab-navy);margin:.4rem 0;font-size:.87rem;opacity:0;transform:translateX(-10px);transition:opacity .4s ease,transform .4s ease}
+.concept-def.visible{opacity:1;transform:translateX(0)}
+.concept-def strong{color:var(--unab-navy)}
+.formula-box{text-align:center;margin:1.25rem 0;padding:1rem;background:var(--accent-light);border-radius:var(--radius);font-size:1rem;font-weight:700;color:var(--unab-navy)}
+.formula-box .formula-note{font-size:.8rem;font-weight:400;color:var(--gray-500);margin-top:.4rem}
+
+/* ===== TRANSITION QUESTION ===== */
+.transition-section{background:linear-gradient(135deg,#1a3f78,var(--unab-navy));color:#fff;border-radius:var(--radius);padding:1.75rem;display:none}
+.transition-section.open{display:block}
+.transition-section h2{font-size:1.3rem;margin-bottom:1rem}
+.question-big{font-size:1.15rem;font-weight:700;margin-bottom.75rem;background:rgba(255,255,255,.12);border-radius:var(--radius-sm);padding:1rem 1.25rem;line-height:1.6}
+.answer-area{width:100%;border:2px solid rgba(255,255,255,.3);background:rgba(255,255,255,.08);border-radius:var(--radius-sm);padding:.75rem 1rem;color:#fff;font-size:.95rem;margin:.75rem 0;resize:vertical;min-height:80px}
+.answer-area::placeholder{color:rgba(255,255,255,.5)}
+.answer-area:focus{outline:2px solid var(--unab-gold);outline-offset:2px}
+.answer-reveal{background:rgba(255,255,255,.15);border-radius:var(--radius-sm);padding:1rem 1.25rem;font-size:.95rem;line-height:1.7;margin-top:.75rem;display:none}
+.answer-reveal.open{display:block}
+.dim-picker{display:flex;gap:.75rem;flex-wrap:wrap;margin:1rem 0}
+.dim-btn{background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.25);border-radius:var(--radius-sm);color:#fff;padding:.55rem 1.1rem;font-weight:700;cursor:pointer;font-size:.9rem;transition:.15s}
+.dim-btn:hover{background:rgba(255,255,255,.2)}
+.dim-btn.selected-dim{background:var(--unab-gold);border-color:var(--unab-gold)}
+.dim-btn:focus{outline:2px solid var(--unab-gold);outline-offset:2px}
+
+/* ===== WHAT CHANGED ===== */
+.change-section{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.5rem;display:none}
+.change-section.open{display:block}
+.change-opp-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
+.change-tab{background:var(--gray-100);border:1px solid var(--gray-200);border-radius:var(--radius-sm);padding:.4rem .9rem;font-size:.85rem;font-weight:600;cursor:pointer;transition:.15s}
+.change-tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.change-tab:focus{outline:2px solid var(--accent);outline-offset:2px}
+.change-cards{display:flex;gap:.75rem;flex-wrap:wrap}
+.change-card{flex:1;min-width:140px;background:var(--gray-50);border:2px solid var(--gray-200);border-radius:var(--radius-sm);padding:.85rem;text-align:center;cursor:pointer;transition:.15s}
+.change-card:hover{border-color:var(--accent)}
+.change-card.marked{border-color:var(--unab-gold);background:rgba(200,153,42,.08)}
+.change-card:focus{outline:2px solid var(--accent);outline-offset:2px}
+.change-card .cc-icon{font-size:1.5rem;margin-bottom:.35rem}
+.change-card .cc-label{font-size:.88rem;font-weight:700;color:var(--unab-navy)}
+.change-card .cc-sub{font-size:.75rem;color:var(--gray-500);margin-top:.2rem}
+
+/* ===== BADGE ===== */
+.badge-section{text-align:center;display:none}
+.badge-section.open{display:block}
+.badge-inner{display:inline-block;background:linear-gradient(135deg,var(--unab-gold),#e0c060);border-radius:var(--radius);padding:1.5rem 2rem;box-shadow:0 4px 20px rgba(200,153,42,.3)}
+.badge-title{font-size:1.4rem;font-weight:800;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.2)}
+.badge-sub{font-size:.9rem;color:rgba(255,255,255,.85);margin-top:.3rem}
+.badge-icon{font-size:3rem;margin-bottom:.5rem}
+
+/* ===== FOOTER ===== */
+.page-footer{background:#fff;border-top:1px solid var(--gray-200);padding:1.25rem 1.5rem;text-align:center;font-size:.8rem;color:var(--gray-500)}
+.page-footer .disclaimer{font-style:italic;color:var(--gray-500);margin-top:.35rem}
+
+/* ===== ARIA LIVE ===== */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* ===== MODAL ===== */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:none;align-items:center;justify-content:center;padding:1rem}
+.modal-overlay.open{display:flex}
+.modal-box{background:#fff;border-radius:var(--radius);max-width:540px;width:100%;max-height:90vh;overflow-y:auto;padding:1.5rem;position:relative}
+.modal-close{position:absolute;top:.75rem;right:.75rem;background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--gray-500);line-height:1}
+.modal-close:focus{outline:2px solid var(--accent);outline-offset:2px}
+
+/* ===== SECTION TITLES ===== */
+.section-title{font-size:1.1rem;font-weight:700;color:var(--unab-navy);border-left:4px solid var(--unab-gold);padding-left:.75rem;margin-bottom:1rem}
+
+/* ===== HIDDEN ===== */
+.hidden{display:none!important}
+
+
+/* ===== V2: COMPARISON MATRIX & SEQUENTIAL CLOSURE ===== */
+.comparison-table-wrap{width:100%;overflow-x:auto;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--gray-200)}
+.opportunity-matrix{width:100%;border-collapse:separate;border-spacing:0;min-width:980px;font-size:.84rem}
+.opportunity-matrix caption{text-align:left;padding:1rem 1rem .65rem;font-weight:700;color:var(--unab-navy);font-size:.95rem}
+.opportunity-matrix th,.opportunity-matrix td{padding:.8rem .75rem;vertical-align:top;border-right:1px solid var(--gray-200);border-bottom:1px solid var(--gray-200)}
+.opportunity-matrix th:last-child,.opportunity-matrix td:last-child{border-right:none}
+.opportunity-matrix tbody tr:last-child td{border-bottom:none}
+.opportunity-matrix thead th{background:var(--unab-navy);color:#fff;text-align:left;font-size:.8rem;line-height:1.35;position:sticky;top:0;z-index:2}
+.opportunity-matrix thead th:first-child{left:0;z-index:4}
+.opportunity-matrix thead th:last-child{position:sticky;right:0;z-index:4;background:var(--unab-navy);min-width:190px}
+.opportunity-matrix tbody td:first-child{position:sticky;left:0;background:#fff;z-index:1;min-width:155px}
+.opportunity-matrix tbody td:last-child{position:sticky;right:0;background:#fff;z-index:1;box-shadow:-6px 0 10px rgba(0,0,0,.04)}
+.opportunity-matrix tbody tr:hover td{background:#fbfcfe}
+.opportunity-matrix tbody tr:hover td:first-child{background:#fbfcfe}
+.matrix-company{font-weight:800;color:var(--unab-navy);font-size:.92rem;margin-bottom:.25rem}
+.matrix-pitch{color:var(--gray-700);line-height:1.45;min-width:210px}
+.matrix-list{padding-left:1rem;margin:0;min-width:220px}
+.matrix-list li{margin:0 0 .35rem;line-height:1.4}
+.matrix-question{margin-top:.55rem;padding:.45rem .55rem;background:var(--accent-light);border-left:3px solid var(--accent);border-radius:0 6px 6px 0;font-size:.78rem;font-weight:600;line-height:1.4}
+.matrix-be{margin-top:.55rem;padding:.5rem .55rem;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:6px;font-size:.76rem;line-height:1.4}
+.matrix-cap{display:grid;grid-template-columns:minmax(115px,1fr) auto;gap:.28rem .6rem;min-width:220px}
+.matrix-cap span:nth-child(odd){color:var(--gray-700)}
+.matrix-invest{min-width:185px}
+.matrix-invest .invest-controls{justify-content:center}
+.matrix-invest .invest-slider{margin-top:.6rem}
+.matrix-round-note{padding:.75rem 1rem;background:var(--accent-light);border:1px solid rgba(26,111,191,.2);border-radius:var(--radius-sm);margin-bottom:1rem;font-size:.88rem;color:var(--gray-900)}
+.stage-controls{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:1.25rem;text-align:center;display:none}
+.stage-controls.open{display:block}
+.stage-controls p{font-size:.88rem;color:var(--gray-700);margin-bottom:.8rem}
+.class-start-section{display:none;min-height:58vh;align-items:center;justify-content:center}
+.class-start-section.open{display:flex}
+.class-start-card{width:min(820px,100%);background:linear-gradient(135deg,var(--unab-navy),#1a3f78);color:#fff;border-radius:var(--radius);padding:2.5rem 2rem;text-align:center;box-shadow:var(--shadow-md)}
+.class-start-kicker{font-size:.82rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#f3cf70;margin-bottom:.9rem}
+.class-start-card h2{font-size:1.45rem;margin-bottom:1rem}
+.class-start-question{font-size:1.35rem;font-weight:750;line-height:1.55;background:rgba(255,255,255,.11);padding:1.35rem 1.5rem;border-radius:var(--radius-sm)}
+.class-start-note{font-size:.88rem;opacity:.78;margin-top:1rem}
+@media(max-width:700px){
+  .opportunity-matrix{font-size:.8rem;min-width:920px}
+  .class-start-card{padding:2rem 1.25rem}.class-start-question{font-size:1.15rem}
+}
+
+</style>
+</head>
+<body>
+<a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+<div aria-live="polite" aria-atomic="true" id="sr-announce" class="sr-only"></div>
+
+<!-- INSTITUTIONAL HEADER -->
+<header class="institutional-header" role="banner">
+  <img src="https://facultades.unab.cl/economiaynegocios/wp-content/uploads/2022/03/logo-fen-negro.png"
+       alt="Logo de la Facultad de Economía y Negocios de la Universidad Andrés Bello"
+       onerror="this.style.display='none'">
+  <div class="inst-text">
+    <h1>Universidad Andrés Bello</h1>
+    <p>Facultad de Economía y Negocios</p>
+  </div>
+</header>
+
+<!-- STICKY INVESTMENT DASHBOARD -->
+<div class="sticky-dashboard" role="complementary" aria-label="Panel de inversión">
+  <div class="dashboard-inner">
+    <div class="dashboard-round">Ronda: <span id="round-label">0 — Intuición</span></div>
+    <div class="dashboard-points">
+      <div class="point-pill used" aria-label="Puntos invertidos">
+        <span>Invertidos:</span><span class="val" id="dash-used">0</span><span>/100</span>
+      </div>
+      <div class="point-pill avail" aria-label="Puntos disponibles">
+        <span>Disponibles:</span><span class="val" id="dash-avail">100</span>
+      </div>
+    </div>
+    <div class="progress-bar-wrap" aria-label="Progreso de la actividad">
+      <div class="progress-bar-track"><div class="progress-bar-fill" id="progress-fill" style="width:20%" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5"></div></div>
+      <div class="progress-steps" aria-hidden="true">
+        <div class="step-dot active" id="dot-0"></div>
+        <div class="step-dot" id="dot-1"></div>
+        <div class="step-dot" id="dot-2"></div>
+        <div class="step-dot" id="dot-3"></div>
+        <div class="step-dot" id="dot-4"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main id="main-content">
+
+<!-- INTRO -->
+<section id="intro" aria-labelledby="intro-heading">
+  <div class="intro-box">
+    <h2 id="intro-heading">¿Dónde invertirías?</h2>
+    <p class="subtitle">Invest, Modify, Wait or Walk Away?</p>
+    <div class="instruction">
+      <strong>Tienes 100 puntos de inversión. ¿En cuál de estas oportunidades invertirías?</strong><br><br>
+      Distribuye tus 100 puntos entre las cuatro oportunidades. Puedes invertir todo en una sola, repartir los puntos entre varias o reservar parte de los puntos. No necesitas conocimientos previos: decide según tu intuición.
+    </div>
+    <p class="warning">⚠️ <strong>No existe todavía una respuesta correcta.</strong> La información disponible cambiará durante el juego.</p>
+    <span class="badge-simulated">🔬 Datos ficticios — solo para fines pedagógicos</span>
+  </div>
+</section>
+
+<!-- OPPORTUNITY CARDS -->
+<section id="opportunity-cards" aria-labelledby="cards-heading">
+  <h2 id="cards-heading" class="section-title">Oportunidades de inversión</h2>
+  <div class="cards-grid" id="cards-grid">
+    <!-- Cards rendered by JS -->
+  </div>
+</section>
+
+<!-- ROUND CONTROLS -->
+<section id="round-controls" aria-labelledby="controls-heading">
+  <h2 id="controls-heading" class="sr-only">Controles de ronda</h2>
+  <div id="alert-msg" class="alert-box hidden" role="alert"></div>
+  <div id="feedback-msg" class="feedback-box hidden" aria-live="polite"></div>
+  <div class="controls-row" id="controls-row"></div>
+  <div class="controls-row" id="controls-secondary"></div>
+</section>
+
+<!-- FINAL DECISION: STAGE 1 -->
+<section id="final-decision" class="final-decision-section" aria-labelledby="final-heading">
+  <h2 id="final-heading" class="section-title">Decisión estratégica final</h2>
+  <p style="font-size:.9rem;color:var(--gray-700);margin-bottom:1rem">Después de revisar la evidencia acumulada, selecciona la acción que recomendarías <strong>solo para las oportunidades en las que mantuviste una inversión mayor que 0 puntos</strong>.</p>
+  <div id="decision-items"></div>
+</section>
+
+<section id="decision-evolution" class="evolution-section" aria-labelledby="evo-heading">
+  <h2 id="evo-heading" class="section-title">Evolución de mi inversión</h2>
+  <p style="font-size:.88rem;color:var(--gray-700);margin-bottom:1rem">Observa cómo cambió la asignación de recursos a medida que incorporaste nueva información.</p>
+  <div class="evo-legend" aria-label="Referencias de rondas">
+    <span><span class="evo-legend-dot" style="background:#90b4d8"></span>Intuición</span>
+    <span><span class="evo-legend-dot" style="background:#4a90d9"></span>Externo</span>
+    <span><span class="evo-legend-dot" style="background:#1a6fbf"></span>Financiero</span>
+    <span><span class="evo-legend-dot" style="background:#002B5C"></span>Interno</span>
+  </div>
+  <div class="evo-chart" id="evo-chart" aria-label="Gráfico de evolución de inversión"></div>
+</section>
+
+<section id="final-stage-controls" class="stage-controls" aria-label="Continuar al cierre metacognitivo">
+  <p id="final-stage-hint">Completa una decisión estratégica para cada oportunidad con inversión final mayor que 0 puntos.</p>
+  <button class="btn-primary" id="btn-to-metacog" onclick="goToMetacognition()" disabled>Continuar al cierre metacognitivo →</button>
+</section>
+
+<!-- METACOGNITIVE CLOSURE: STAGE 2 -->
+<section id="concept-map" class="concept-section" aria-labelledby="concept-heading">
+  <h2 id="concept-heading" class="section-title">La ruta del Opportunity Analysis</h2>
+  <p style="font-size:.9rem;color:var(--gray-700);margin-bottom:1rem">Reconstruye el proceso que acabas de experimentar y conecta cada nueva evidencia con tu decisión.</p>
+  <div class="concept-flow" id="concept-flow" aria-label="Flujo de análisis de oportunidades"></div>
+  <div class="concept-def-box" id="concept-defs"></div>
+  <div class="formula-box" id="formula-box" style="display:none">
+    <div>Idea ≠ Opportunity</div>
+    <div style="margin:.75rem 0;font-size:1.05rem">Opportunity = Market Attractiveness + Economic Viability + Organizational Fit</div>
+    <div class="formula-note">Esta expresión es conceptual, no una fórmula matemática.</div>
+  </div>
+</section>
+
+<section id="change-section" class="change-section" aria-labelledby="change-heading">
+  <h2 id="change-heading" class="section-title">¿Qué cambió más mi decisión?</h2>
+  <p style="font-size:.9rem;color:var(--gray-700);margin-bottom:1rem">Selecciona una oportunidad y marca qué dimensión cambió más tu percepción.</p>
+  <div class="change-opp-tabs" id="change-tabs" role="tablist"></div>
+  <div class="change-cards" id="change-cards" role="group" aria-label="Dimensiones de decisión"></div>
+</section>
+
+<section id="transition-question" class="transition-section" aria-labelledby="trans-heading">
+  <h2 id="trans-heading">Cierre metacognitivo</h2>
+  <div class="question-big">¿Por qué no bastaba con conocer la idea para decidir dónde invertir?</div>
+  <label for="answer-text" style="font-size:.88rem;opacity:.8;display:block;margin-bottom:.4rem">Tu respuesta (opcional):</label>
+  <textarea id="answer-text" class="answer-area" placeholder="Escribe aquí tu reflexión..." aria-label="Respuesta a la pregunta de reflexión"></textarea>
+  <div class="controls-row">
+    <button class="btn-reveal" onclick="revealAnswer()" id="btn-reveal-answer">Revelar explicación</button>
+  </div>
+  <div class="answer-reveal" id="answer-reveal">
+    Porque una idea se convierte en una oportunidad evaluable cuando entendemos el mercado, estimamos si puede generar valor económico y determinamos si la organización tiene capacidad para ejecutarla.
+  </div>
+  <div style="margin-top:1.5rem">
+    <p style="font-size:1rem;font-weight:700;margin-bottom:.75rem">Pensando en todo el ejercicio, ¿qué información cambió más tu decisión?</p>
+    <div class="dim-picker" id="dim-picker" role="group" aria-label="Dimensión que más cambió la decisión">
+      <button class="dim-btn" data-dim="market" onclick="selectDim(this)" aria-pressed="false">🏪 Mercado</button>
+      <button class="dim-btn" data-dim="finance" onclick="selectDim(this)" aria-pressed="false">💰 Finanzas</button>
+      <button class="dim-btn" data-dim="capacity" onclick="selectDim(this)" aria-pressed="false">🏢 Capacidades internas</button>
+    </div>
+  </div>
+  <div style="margin-top:1.5rem">
+    <div style="font-size:.85rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;opacity:.7;margin-bottom:.5rem">Compara tu primera inversión con la última ronda:</div>
+    <div id="comparison-table" style="background:rgba(255,255,255,.1);border-radius:var(--radius-sm);padding:1rem;font-size:.88rem"></div>
+  </div>
+  <div class="feedback-box success" style="margin-top:1rem;background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.3);color:#fff" id="change-msg" hidden>
+    Si cambiaste de decisión, acabas de experimentar la lógica del Opportunity Analysis: analizar antes de comprometer recursos.
+  </div>
+</section>
+
+<section id="badge-section" class="badge-section" aria-label="Insignia obtenida">
+  <div class="badge-inner">
+    <div class="badge-icon" aria-hidden="true">🏆</div>
+    <div class="badge-title">Opportunity Analyst</div>
+    <div class="badge-sub">Nivel Inicial — Actividad completada</div>
+  </div>
+</section>
+
+<section id="metacog-stage-controls" class="stage-controls" aria-label="Ir a la pregunta de inicio de clase">
+  <p>Has reconstruido la lógica del análisis. Cierra la actividad con una pregunta para llevar a la discusión de clase.</p>
+  <button class="btn-primary" onclick="goToClassQuestion()">Ir a la pregunta de inicio →</button>
+</section>
+
+<!-- FINAL PAGE: STAGE 3 -->
+<section id="class-start-section" class="class-start-section" aria-labelledby="class-start-heading">
+  <div class="class-start-card">
+    <div class="class-start-kicker">Pregunta para iniciar la clase</div>
+    <h2 id="class-start-heading">Lleva esta pregunta a la discusión</h2>
+    <div class="class-start-question">¿Cuándo una idea atractiva se convierte realmente en una oportunidad en la que vale la pena invertir?</div>
+    <p class="class-start-note">No la respondas todavía: úsala como punto de partida para la conversación de la sesión.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="page-footer" role="contentinfo">
+  <div class="controls-row" style="margin-bottom:.5rem">
+    <button class="btn-danger" onclick="resetActivity()" id="btn-reset">↺ Reiniciar actividad</button>
+  </div>
+  <p>Universidad Andrés Bello — Facultad de Economía y Negocios</p>
+  <p class="disclaimer">Los datos numéricos de esta actividad son ficticios y están diseñados exclusivamente para fines pedagógicos. No representan datos reales de mercado.</p>
+</footer>
+
+<script>
+// =====================================================================
+// DATA
+// =====================================================================
+const OPPORTUNITIES = [
+  {
+    id: 'quickbite',
+    name: 'QuickBite Campus',
+    pitch: 'Almuerzos saludables solicitados desde una app y entregados en pocos minutos dentro del campus.',
+    iconColor: '#F97316',
+    iconBg: '#FFF0E6',
+    icon: `<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect x="4" y="20" width="28" height="4" rx="2" fill="#F97316"/>
+      <ellipse cx="18" cy="20" rx="12" ry="5" fill="#F97316" fill-opacity=".3"/>
+      <rect x="10" y="8" width="16" height="12" rx="3" fill="#F97316" fill-opacity=".6"/>
+      <circle cx="27" cy="10" r="6" fill="#1A6FBF"/>
+      <line x1="27" y1="7" x2="27" y2="13" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="24" y1="10" x2="30" y2="10" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>`,
+    rounds: {
+      external: {
+        title: 'Análisis externo',
+        items: [
+          'Campus con aproximadamente 12.000 estudiantes.',
+          '38% declara que encontrar un almuerzo rápido entre clases es un problema frecuente.',
+          '16% declara disposición inicial a pagar por una solución de entrega rápida.',
+          'Existen al menos 8 alternativas de alimentación alrededor del campus.',
+          'El problema parece mayor entre estudiantes con bloques consecutivos entre 12:00 y 15:00.'
+        ],
+        question: '¿Existe mercado o solamente interés general?'
+      },
+      financial: {
+        title: 'Análisis financiero',
+        items: [
+          'Precio promedio por almuerzo: $6.000 CLP.',
+          'Costo variable estimado: $4.200 CLP.',
+          'Margen de contribución por almuerzo: $1.800 CLP.',
+          'Costos fijos mensuales: $3.600.000 CLP.',
+          'Inversión inicial: $9.000.000 CLP.'
+        ],
+        breakeven: {
+          formula: 'PE = 3.600.000 / 1.800 = 2.000 almuerzos/mes',
+          note: 'Con 20 días operación: 2.000 / 20 = 100 almuerzos diarios'
+        },
+        question: '¿La demanda identificada parece suficiente para alcanzar aproximadamente 100 ventas diarias?'
+      },
+      internal: {
+        title: 'Análisis interno',
+        capabilities: [
+          ['Marketing digital', 'high'],
+          ['Acceso a estudiantes', 'high'],
+          ['Cocina propia', 'low', 'No disponible'],
+          ['Experiencia logística', 'low'],
+          ['Capital disponible', 'low', 'Limitado'],
+          ['Alianza con cafetería', 'high', 'Alta posibilidad']
+        ],
+        question: '¿Conviene lanzar directamente o modificar la oportunidad mediante una alianza?'
+      }
+    }
+  },
+  {
+    id: 'studyai',
+    name: 'StudyAI',
+    pitch: 'Tutor de inteligencia artificial personalizado para apoyar a estudiantes en sus asignaturas universitarias.',
+    iconColor: '#8B5CF6',
+    iconBg: '#F3EEFF',
+    icon: `<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <ellipse cx="18" cy="14" rx="10" ry="9" fill="#8B5CF6" fill-opacity=".25"/>
+      <ellipse cx="18" cy="14" rx="6" ry="5" fill="#8B5CF6"/>
+      <line x1="12" y1="10" x2="8" y2="7" stroke="#8B5CF6" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="24" y1="10" x2="28" y2="7" stroke="#8B5CF6" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="18" y1="9" x2="18" y2="6" stroke="#8B5CF6" stroke-width="1.5" stroke-linecap="round"/>
+      <rect x="10" y="24" width="16" height="8" rx="2" fill="#6D28D9" fill-opacity=".5"/>
+      <line x1="18" y1="23" x2="18" y2="25" stroke="#8B5CF6" stroke-width="2"/>
+      <circle cx="15" cy="28" r="1.5" fill="white"/>
+      <circle cx="21" cy="28" r="1.5" fill="white"/>
+    </svg>`,
+    rounds: {
+      external: {
+        title: 'Análisis externo',
+        items: [
+          'Alta familiaridad de los estudiantes con herramientas de IA.',
+          'Existen numerosos sustitutos gratuitos.',
+          'Los estudiantes valoran especialmente explicaciones adaptadas a asignaturas específicas.',
+          'Existen preocupaciones relacionadas con integridad académica, privacidad y uso responsable.',
+          'La disposición a pagar parece depender de que el servicio entregue un valor claramente superior a las herramientas gratuitas.'
+        ],
+        question: '¿El crecimiento de la IA significa automáticamente que existe un mercado dispuesto a pagar?'
+      },
+      financial: {
+        title: 'Análisis financiero',
+        items: [
+          'Suscripción mensual: $7.990 CLP.',
+          'Costo variable por usuario: $1.500 CLP.',
+          'Margen de contribución aproximado: $6.490 CLP.',
+          'Costos fijos mensuales: $2.200.000 CLP.',
+          'Inversión inicial: $6.000.000 CLP.'
+        ],
+        breakeven: {
+          formula: 'PE = 2.200.000 / 6.490 ≈ 339 suscriptores',
+          note: ''
+        },
+        question: '¿Puede una propuesta pagada conseguir suficientes usuarios cuando existen alternativas gratuitas?'
+      },
+      internal: {
+        title: 'Análisis interno',
+        capabilities: [
+          ['Desarrollo de software', 'high'],
+          ['Acceso a estudiantes', 'high'],
+          ['Conocimiento pedagógico', 'low'],
+          ['Gestión de privacidad y datos', 'low'],
+          ['Relación con profesores', 'low'],
+          ['Alianza académica', 'mid', 'Media']
+        ],
+        question: '¿El problema es tecnológico o la principal brecha está en capacidades pedagógicas y de legitimidad?'
+      }
+    }
+  },
+  {
+    id: 'campusbike',
+    name: 'CampusBike',
+    pitch: 'Bicicletas eléctricas compartidas para trayectos cortos entre hogares, estaciones y campus.',
+    iconColor: '#10B981',
+    iconBg: '#E6FAF4',
+    icon: `<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="9" cy="26" r="6" stroke="#10B981" stroke-width="2.5"/>
+      <circle cx="27" cy="26" r="6" stroke="#10B981" stroke-width="2.5"/>
+      <path d="M9 26 L18 12 L27 26" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M14 12 L22 12" stroke="#10B981" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="27" cy="11" r="3" fill="#F97316" opacity=".8"/>
+      <line x1="27" y1="9" x2="27" y2="13" stroke="white" stroke-width="1" stroke-linecap="round"/>
+    </svg>`,
+    rounds: {
+      external: {
+        title: 'Análisis externo',
+        items: [
+          'Una parte relevante de los estudiantes vive a menos de 5 km del campus.',
+          'Solo una fracción manifiesta intención inmediata de usar una bicicleta compartida.',
+          'Existe buena cobertura de transporte público.',
+          'Seguridad vial y estacionamiento aparecen como preocupaciones frecuentes.',
+          'La demanda podría ser estacional.'
+        ],
+        question: '¿La existencia de muchos usuarios potenciales significa que existe demanda efectiva?'
+      },
+      financial: {
+        title: 'Análisis financiero',
+        items: [
+          'Suscripción promedio: $25.000 CLP mensuales.',
+          'Costo variable y mantenimiento estimado: $8.000 CLP por usuario.',
+          'Margen de contribución: $17.000 CLP.',
+          'Costos fijos mensuales: $4.500.000 CLP.',
+          'Inversión inicial en bicicletas, estaciones y equipamiento: $45.000.000 CLP.'
+        ],
+        breakeven: {
+          formula: 'PE = 4.500.000 / 17.000 ≈ 265 usuarios activos',
+          note: ''
+        },
+        question: '¿El nivel de inversión inicial es consistente con una demanda todavía incierta?'
+      },
+      internal: {
+        title: 'Análisis interno',
+        capabilities: [
+          ['Capital disponible', 'low'],
+          ['Mantenimiento de flota', 'low', 'Muy bajo'],
+          ['Experiencia logística', 'low'],
+          ['Marketing universitario', 'high'],
+          ['Relaciones municipalidad/campus', 'low'],
+          ['Socio operador', 'mid', 'Incierto']
+        ],
+        question: '¿Una buena idea puede ser una mala oportunidad para esta empresa específica?'
+      }
+    }
+  },
+  {
+    id: 'ecorefill',
+    name: 'EcoRefill',
+    pitch: 'Estaciones de recarga de productos de cuidado personal para reducir envases de un solo uso.',
+    iconColor: '#059669',
+    iconBg: '#E6F9F4',
+    icon: `<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect x="12" y="6" width="12" height="22" rx="4" fill="#059669" fill-opacity=".25" stroke="#059669" stroke-width="2"/>
+      <path d="M18 28 C18 28 10 22 10 15 C10 11 13.5 8 18 8 C22.5 8 26 11 26 15 C26 22 18 28 18 28Z" fill="#059669" fill-opacity=".4"/>
+      <circle cx="27" cy="9" r="6" fill="#10B981"/>
+      <path d="M25 9 C25 9 26 7 28 7 C30 7 30 9 28 9 C30 9 30 11 28 11 C26 11 25 9 25 9Z" stroke="white" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    </svg>`,
+    rounds: {
+      external: {
+        title: 'Análisis externo',
+        items: [
+          'Alta valoración declarada de la sostenibilidad.',
+          'Uso actual de sistemas refill todavía limitado.',
+          'Pocos competidores directos cerca del campus.',
+          'La principal barrera podría ser cambiar un hábito de compra.',
+          'Un segmento pequeño muestra mayor sensibilidad a reducción de residuos.'
+        ],
+        question: '¿Una actitud positiva hacia la sostenibilidad se transforma necesariamente en compra?'
+      },
+      financial: {
+        title: 'Análisis financiero',
+        items: [
+          'Ticket promedio: $9.000 CLP.',
+          'Margen de contribución estimado por transacción: $3.500 CLP.',
+          'Costos fijos mensuales: $1.500.000 CLP.',
+          'Inversión inicial: $7.000.000 CLP.'
+        ],
+        breakeven: {
+          formula: 'PE = 1.500.000 / 3.500 ≈ 429 transacciones/mes',
+          note: 'Con 20 días operación: 429 / 20 ≈ 22 transacciones diarias'
+        },
+        question: '¿Conviene buscar todo el mercado o comenzar con un nicho pequeño y claramente identificado?'
+      },
+      internal: {
+        title: 'Análisis interno',
+        capabilities: [
+          ['Acceso a proveedores', 'high'],
+          ['Operación de retail', 'mid'],
+          ['Marketing', 'mid'],
+          ['Capital requerido', 'mid', 'Manejable'],
+          ['Experiencia cambio de hábitos', 'low'],
+          ['Piloto en un campus', 'high', 'Alta posibilidad']
+        ],
+        question: '¿Sería más razonable un lanzamiento masivo o un piloto de nicho?'
+      }
+    }
+  }
+];
+
+const ROUND_LABELS = ['0 — Intuición','1 — Análisis externo','2 — Análisis financiero','3 — Análisis interno','Final'];
+const ROUND_FEEDBACK = [
+  null,
+  'Nueva información puede cambiar el atractivo de una oportunidad. Observa si tus puntos se movieron después de conocer el mercado.',
+  'Una oportunidad atractiva puede perder valor cuando aparecen los costos.',
+  'Una empresa puede identificar una oportunidad y, aun así, no ser la organización adecuada para ejecutarla.',
+  'Compara tu primera inversión con tu decisión final.'
+];
+
+// =====================================================================
+// STATE
+// =====================================================================
+let state = {
+  round: 0,         // 0=intuition,1=ext,2=fin,3=int,4=final
+  confirmed: false, // current round confirmed?
+  revealed: false,  // next reveal shown?
+  investments: [
+    {id:'quickbite', r0:0, r1:0, r2:0, r3:0, current:0, decision:null, changedBy:null},
+    {id:'studyai',   r0:0, r1:0, r2:0, r3:0, current:0, decision:null, changedBy:null},
+    {id:'campusbike',r0:0, r1:0, r2:0, r3:0, current:0, decision:null, changedBy:null},
+    {id:'ecorefill', r0:0, r1:0, r2:0, r3:0, current:0, decision:null, changedBy:null},
+  ],
+  finalDecisions: {quickbite:null, studyai:null, campusbike:null, ecorefill:null},
+  decisionChanged: false,
+  activeDim: null,
+  activeChangeTab: 'quickbite'
+};
+
+function saveState(){try{localStorage.setItem('oa_state',JSON.stringify(state))}catch(e){}}
+function loadState(){
+  try{
+    const s=localStorage.getItem('oa_state');
+    if(s){state=JSON.parse(s);return true}
+  }catch(e){}
+  return false;
+}
+
+// =====================================================================
+// HELPERS
+// =====================================================================
+function totalUsed(){return state.investments.reduce((a,i)=>a+i.current,0)}
+function available(){return 100-totalUsed()}
+function announce(msg){document.getElementById('sr-announce').textContent=msg}
+
+function inv(id){return state.investments.find(i=>i.id===id)}
+function opp(id){return OPPORTUNITIES.find(o=>o.id===id)}
+
+function capClass(level){
+  if(level==='high') return 'cap-high';
+  if(level==='mid') return 'cap-mid';
+  return 'cap-low';
+}
+function capLabel(level){
+  if(level==='high') return 'Alto';
+  if(level==='mid') return 'Medio';
+  return 'Bajo';
+}
+
+// =====================================================================
+// RENDER CARDS
+// =====================================================================
+function renderCards(){
+  const grid=document.getElementById('cards-grid');
+  grid.innerHTML='';
+  OPPORTUNITIES.forEach(o=>{
+    const investment=inv(o.id);
+    const card=document.createElement('article');
+    card.className='opp-card'+(investment.current>0?' has-investment':'');
+    card.id='card-'+o.id;
+    card.setAttribute('aria-label','Oportunidad '+o.name);
+
+    // Delta
+    let deltaHtml='';
+    if(state.round>0){
+      const prev=investment['r'+(state.round-1)];
+      const diff=investment.current-prev;
+      if(diff>0) deltaHtml=`<span class="invest-delta delta-up" aria-label="Aumento de ${diff} puntos">▲ +${diff}</span>`;
+      else if(diff<0) deltaHtml=`<span class="invest-delta delta-down" aria-label="Reducción de ${Math.abs(diff)} puntos">▼ ${diff}</span>`;
+      else deltaHtml=`<span class="invest-delta delta-neutral" aria-label="Sin cambio">= 0</span>`;
+    }
+
+    // Reveal panel content
+    let revealContent='';
+    if(state.round>=1 && state.revealed){
+      revealContent+=buildRevealPanel(o,'external');
+    }
+    if(state.round>=2 && state.revealed){
+      revealContent+=buildRevealPanel(o,'financial');
+    }
+    if(state.round>=3 && state.revealed){
+      revealContent+=buildRevealPanel(o,'internal');
+    }
+
+    const canEdit = !state.confirmed || state.round===0 ? false : false;
+    const editable = !state.confirmed;
+
+    card.innerHTML=`
+      <div class="card-header">
+        <div class="card-icon" style="background:${o.iconBg}" aria-hidden="true">${o.icon}</div>
+        <div class="card-title-area">
+          <h3>${o.name}</h3>
+          <p class="card-pitch">${o.pitch}</p>
+        </div>
+      </div>
+      <div class="card-invest-area">
+        <div class="invest-controls">
+          <label for="inv-${o.id}">Inversión:</label>
+          <button class="btn-adjust" onclick="adjustInv('${o.id}',-5)" aria-label="Reducir 5 puntos en ${o.name}" ${editable?'':'disabled'}>−5</button>
+          <span class="invest-value" id="inv-val-${o.id}" aria-live="polite" aria-label="${investment.current} puntos asignados a ${o.name}">${investment.current}</span>
+          ${deltaHtml}
+          <button class="btn-adjust" onclick="adjustInv('${o.id}',5)" aria-label="Agregar 5 puntos a ${o.name}" ${editable?'':'disabled'}>+5</button>
+        </div>
+        <input type="range" id="inv-${o.id}" min="0" max="100" step="5" value="${investment.current}"
+          aria-label="Puntos para ${o.name}" class="invest-slider"
+          oninput="setInv('${o.id}',+this.value)" ${editable?'':'disabled'}>
+        ${revealContent?`<button class="btn-view-detail" onclick="toggleRevealPanel('${o.id}')" aria-expanded="false" id="btn-detail-${o.id}">▶ Ver oportunidad</button>`:''}
+      </div>
+      ${revealContent?`<div class="reveal-panel" id="panel-${o.id}">${revealContent}</div>`:''}
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function buildRevealPanel(o, type){
+  const r=o.rounds[type];
+  if(!r) return '';
+  let html=`<div style="margin-bottom:.75rem"><h4>${r.title}</h4>`;
+  if(r.items){
+    html+=`<ul class="reveal-list">`;
+    r.items.forEach(it=>{ html+=`<li>${it}</li>`; });
+    html+=`</ul>`;
+  }
+  if(r.breakeven){
+    html+=`<div class="breakeven-box">
+      <p><strong>Punto de equilibrio:</strong></p>
+      <p class="be-formula">${r.breakeven.formula}</p>
+      ${r.breakeven.note?`<p style="margin-top:.3rem;font-size:.8rem;color:var(--gray-500)">${r.breakeven.note}</p>`:''}
+    </div>`;
+  }
+  if(r.capabilities){
+    html+=`<table class="capacity-table" aria-label="Capacidades internas de ${o.name}"><tbody>`;
+    r.capabilities.forEach(([name,level,note])=>{
+      html+=`<tr><td>${name}</td><td class="${capClass(level)}">${note||capLabel(level)}</td></tr>`;
+    });
+    html+=`</tbody></table>`;
+  }
+  html+=`<div class="reveal-question">${r.question}</div></div>`;
+  return html;
+}
+
+function toggleRevealPanel(id){
+  const panel=document.getElementById('panel-'+id);
+  const btn=document.getElementById('btn-detail-'+id);
+  if(!panel||!btn) return;
+  const open=panel.classList.contains('open');
+  panel.classList.toggle('open',!open);
+  btn.setAttribute('aria-expanded',String(!open));
+  btn.textContent=(open?'▶ Ver oportunidad':'▼ Cerrar detalle');
+}
+
+// =====================================================================
+// INVESTMENT LOGIC
+// =====================================================================
+function adjustInv(id, delta){
+  const investment=inv(id);
+  const newVal=Math.max(0,Math.min(100,investment.current+delta));
+  const newTotal=(totalUsed()-investment.current)+newVal;
+  if(newTotal>100){
+    showAlert('No puedes superar los 100 puntos de inversión. Tienes '+available()+' disponibles.');
+    return;
+  }
+  hideAlert();
+  investment.current=newVal;
+  updateDash();
+  document.getElementById('inv-val-'+id).textContent=newVal;
+  const slider=document.getElementById('inv-'+id);
+  if(slider) slider.value=newVal;
+  document.getElementById('card-'+id).classList.toggle('has-investment',newVal>0);
+  announce(`${opp(id).name}: ${newVal} puntos`);
+  saveState();
+}
+
+function setInv(id, val){
+  const investment=inv(id);
+  const clamped=Math.max(0,Math.min(100,val));
+  const newTotal=(totalUsed()-investment.current)+clamped;
+  if(newTotal>100){
+    showAlert('No puedes superar los 100 puntos. Reduce otra oportunidad primero.');
+    // reset slider
+    const slider=document.getElementById('inv-'+id);
+    if(slider) slider.value=investment.current;
+    return;
+  }
+  hideAlert();
+  investment.current=clamped;
+  updateDash();
+  document.getElementById('inv-val-'+id).textContent=clamped;
+  document.getElementById('card-'+id).classList.toggle('has-investment',clamped>0);
+  saveState();
+}
+
+function updateDash(){
+  const used=totalUsed();
+  document.getElementById('dash-used').textContent=used;
+  document.getElementById('dash-avail').textContent=100-used;
+  document.getElementById('progress-fill').style.width=`${(state.round+1)/5*100}%`;
+}
+
+function showAlert(msg){
+  const el=document.getElementById('alert-msg');
+  el.textContent=msg;
+  el.classList.remove('hidden');
+  announce(msg);
+}
+function hideAlert(){
+  document.getElementById('alert-msg').classList.add('hidden');
+}
+function showFeedback(msg,cls=''){
+  const el=document.getElementById('feedback-msg');
+  el.textContent=msg;
+  el.className='feedback-box'+(cls?' '+cls:'');
+  el.classList.remove('hidden');
+}
+function hideFeedback(){
+  document.getElementById('feedback-msg').classList.add('hidden');
+}
+
+// =====================================================================
+// ROUND PROGRESSION
+// =====================================================================
+const ROUND_CONFIRM_LABELS = [
+  'Confirmar inversión inicial',
+  'Confirmar después del análisis externo',
+  'Confirmar después del análisis financiero',
+  'Confirmar después del análisis interno',
+];
+const REVEAL_LABELS = [
+  null,
+  '🔍 Revelar análisis externo',
+  '💰 Revelar análisis financiero',
+  '🏢 Revelar análisis interno',
+];
+
+function renderControls(){
+  const row=document.getElementById('controls-row');
+  const sec=document.getElementById('controls-secondary');
+  row.innerHTML='';
+  sec.innerHTML='';
+
+  if(state.round===4) return; // final phase handled elsewhere
+
+  if(!state.confirmed){
+    // Confirm button
+    const btn=document.createElement('button');
+    btn.className='btn-primary';
+    btn.textContent=ROUND_CONFIRM_LABELS[state.round]||'Confirmar';
+    btn.onclick=confirmRound;
+    row.appendChild(btn);
+  } else if(!state.revealed && state.round<3){
+    // Reveal button
+    const btn=document.createElement('button');
+    btn.className='btn-reveal';
+    btn.textContent=REVEAL_LABELS[state.round+1]||'Revelar';
+    btn.onclick=revealNextRound;
+    row.appendChild(btn);
+  } else if(state.revealed && state.round<3){
+    // Confirm after reveal
+    const btn=document.createElement('button');
+    btn.className='btn-primary';
+    btn.textContent=ROUND_CONFIRM_LABELS[state.round+1]||'Confirmar';
+    btn.onclick=confirmRevealRound;
+    row.appendChild(btn);
+  } else if(state.round===3 && state.revealed){
+    // Final confirm
+    const btn=document.createElement('button');
+    btn.className='btn-primary';
+    btn.textContent='Confirmar decisión final ✓';
+    btn.onclick=finishActivity;
+    row.appendChild(btn);
+  }
+}
+
+function confirmRound(){
+  // Save r0
+  state.investments.forEach(i=>{ i.r0=i.current; });
+  state.confirmed=true;
+  state.round=0; // still round 0 but confirmed
+  showFeedback(ROUND_FEEDBACK[1]||'Inversión inicial guardada. ¡Ahora revelaremos más información!');
+  renderControls();
+  renderCards();
+  updateDots();
+  announce('Inversión inicial confirmada. Puntos guardados como Ronda 0.');
+  saveState();
+}
+
+function revealNextRound(){
+  state.round++;
+  state.revealed=true;
+  renderCards();
+  renderControls();
+  showFeedback(ROUND_FEEDBACK[state.round]);
+  updateDots();
+  // Open all panels
+  OPPORTUNITIES.forEach(o=>{
+    const panel=document.getElementById('panel-'+o.id);
+    const btn=document.getElementById('btn-detail-'+o.id);
+    if(panel){panel.classList.add('open');}
+    if(btn){btn.setAttribute('aria-expanded','true');btn.textContent='▼ Cerrar detalle';}
+  });
+  announce(`Análisis revelado: ${ROUND_LABELS[state.round]}. Puedes reasignar tus puntos.`);
+  saveState();
+}
+
+function confirmRevealRound(){
+  const rKey='r'+state.round;
+  state.investments.forEach(i=>{ i[rKey]=i.current; });
+  if(state.round<3){
+    state.revealed=false;
+    renderControls();
+    showFeedback(`Ronda ${state.round} confirmada. ¿Listo para el siguiente análisis?`);
+  }
+  updateDots();
+  renderCards();
+  announce(`Ronda ${state.round} confirmada.`);
+  saveState();
+}
+
+function finishActivity(){
+  // save r3
+  state.investments.forEach(i=>{ i.r3=i.current; });
+  state.round=4;
+  renderControls();
+  renderCards();
+  updateDots();
+  // Show final sections
+  document.getElementById('final-decision').classList.add('open');
+  renderFinalDecision();
+  document.getElementById('decision-evolution').classList.add('open');
+  renderEvoChart();
+  document.getElementById('concept-map').classList.add('open');
+  renderConceptMap();
+  document.getElementById('change-section').classList.add('open');
+  renderChangeTabs();
+  document.getElementById('transition-question').classList.add('open');
+  renderComparison();
+  document.getElementById('badge-section').classList.add('open');
+  showFeedback('¡Actividad completada! Compara tu primera inversión con tu decisión final.','success');
+  announce('Actividad completada. Revisa tu evolución y toma tus decisiones finales.');
+  saveState();
+}
+
+// =====================================================================
+// FINAL DECISION
+// =====================================================================
+function renderFinalDecision(){
+  const container=document.getElementById('decision-items');
+  container.innerHTML='';
+
+  // Solo pasan a decisión estratégica las oportunidades con inversión final positiva.
+  const eligibleOpportunities=OPPORTUNITIES.filter(o=>inv(o.id).r3>0);
+
+  if(eligibleOpportunities.length===0){
+    container.innerHTML=`<div class="feedback-box" style="margin-top:0">
+      No mantuviste puntos invertidos al finalizar el análisis interno. Por lo tanto, no hay oportunidades que requieran una decisión estratégica final.
+    </div>`;
+    return;
+  }
+
+  eligibleOpportunities.forEach(o=>{
+    const inv_o=inv(o.id);
+    const div=document.createElement('div');
+    div.style.marginBottom='1.25rem';
+    div.innerHTML=`<p class="decision-opp-name">${o.name} <span style="font-weight:600;color:var(--gray-500)">· ${inv_o.r3} puntos invertidos</span></p>
+    <div class="decision-card-row" role="group" aria-label="Decisión para ${o.name}">
+      ${['GO','MODIFY','WAIT','NO-GO'].map(d=>{
+        const cls=inv_o.decision===d?'selected-'+d.toLowerCase().replace('-',''):'';
+        return `<button class="decision-card ${cls}" onclick="selectDecision('${o.id}','${d}',this)"
+          aria-pressed="${inv_o.decision===d}" aria-label="${d} para ${o.name}">
+          <div class="dec-label">${decIcon(d)} ${d}</div>
+          <div class="dec-desc">${decDesc(d)}</div>
+        </button>`;
+      }).join('')}
+    </div>`;
+    container.appendChild(div);
+  });
+}
+
+function decIcon(d){return{GO:'✅',MODIFY:'🔧',WAIT:'⏳','NO-GO':'🚫'}[d]||''}
+function decDesc(d){return{GO:'Continuar',MODIFY:'Rediseñar',WAIT:'Esperar / buscar más info','NO-GO':'No perseguir'}[d]||''}
+
+function selectDecision(id, decision, btn){
+  const investment=inv(id);
+  investment.decision=decision;
+  state.finalDecisions[id]=decision;
+  // Update aria-pressed on siblings
+  const row=btn.closest('.decision-card-row');
+  row.querySelectorAll('.decision-card').forEach(b=>{
+    b.setAttribute('aria-pressed','false');
+    b.className='decision-card';
+  });
+  btn.setAttribute('aria-pressed','true');
+  const cls='selected-'+decision.toLowerCase().replace('-','');
+  btn.classList.add(cls);
+  announce(`${opp(id).name}: ${decision}`);
+  checkAllDecisions();
+  saveState();
+}
+
+function checkAllDecisions(){
+  const all=state.investments.every(i=>i.decision!==null);
+  if(all){
+    state.decisionChanged=state.investments.some(i=>i.r0!==i.r3);
+    const msg=document.getElementById('change-msg');
+    if(msg) msg.hidden=false;
+  }
+}
+
+// =====================================================================
+// EVOLUTION CHART
+// =====================================================================
+const BAR_COLORS=['#90b4d8','#4a90d9','#1a6fbf','#002B5C'];
+const ROUND_NAMES=['R0','R1','R2','R3'];
+
+function renderEvoChart(){
+  const chart=document.getElementById('evo-chart');
+  chart.innerHTML='';
+  const maxVal=100;
+  OPPORTUNITIES.forEach(o=>{
+    const investment=inv(o.id);
+    const vals=[investment.r0,investment.r1,investment.r2,investment.r3];
+    const row=document.createElement('div');
+    row.className='evo-row';
+    row.innerHTML=`<span class="evo-label">${o.name}</span>
+    <div class="evo-bars" aria-label="Inversión de ${o.name} por ronda">
+      ${vals.map((v,i)=>`
+        <div class="evo-bar-wrap">
+          <span class="evo-bar-val">${v}</span>
+          <div class="evo-bar" style="height:${Math.max(4,(v/maxVal)*80)}px;background:${BAR_COLORS[i]}" role="img" aria-label="Ronda ${i}: ${v} puntos"></div>
+          <span class="evo-bar-round">${ROUND_NAMES[i]}</span>
+        </div>`).join('')}
+    </div>`;
+    chart.appendChild(row);
+  });
+}
+
+// =====================================================================
+// CONCEPT MAP
+// =====================================================================
+const CONCEPT_NODES=[
+  {label:'IDEA',cls:''},
+  {label:'ANÁLISIS EXTERNO',cls:''},
+  {label:'ANÁLISIS FINANCIERO',cls:''},
+  {label:'ANÁLISIS INTERNO',cls:''},
+  {label:'DECISIÓN',cls:'gold'},
+];
+const CONCEPT_DEFS=[
+  '<strong>Idea:</strong> Propuesta inicial que parece atractiva.',
+  '<strong>Análisis externo:</strong> Determina si existe demanda, mercado y una posición competitiva posible.',
+  '<strong>Análisis financiero:</strong> Traduce los supuestos del mercado a ingresos, costos, inversión y retorno.',
+  '<strong>Análisis interno:</strong> Evalúa si la organización posee o puede adquirir los recursos y capacidades necesarios.',
+  '<strong>Decisión:</strong> Continuar, modificar, esperar o abandonar la oportunidad.',
+];
+
+function renderConceptMap(){
+  const flow=document.getElementById('concept-flow');
+  const defs=document.getElementById('concept-defs');
+  flow.innerHTML='';
+  defs.innerHTML='';
+
+  CONCEPT_NODES.forEach((n,i)=>{
+    const node=document.createElement('div');
+    node.className='concept-node'+' '+(n.cls||'');
+    node.textContent=n.label;
+    flow.appendChild(node);
+    if(i<CONCEPT_NODES.length-1){
+      const arr=document.createElement('span');
+      arr.className='concept-arrow';
+      arr.textContent='→';
+      arr.setAttribute('aria-hidden','true');
+      flow.appendChild(arr);
+    }
+  });
+
+  CONCEPT_DEFS.forEach(d=>{
+    const p=document.createElement('p');
+    p.className='concept-def';
+    p.innerHTML=d;
+    defs.appendChild(p);
+  });
+
+  // Animate
+  let delay=100;
+  flow.querySelectorAll('.concept-node,.concept-arrow').forEach(el=>{
+    setTimeout(()=>el.classList.add('visible'),delay);
+    delay+=200;
+  });
+  defs.querySelectorAll('.concept-def').forEach(el=>{
+    setTimeout(()=>el.classList.add('visible'),delay);
+    delay+=200;
+  });
+  setTimeout(()=>{
+    document.getElementById('formula-box').style.display='block';
+  },delay+200);
+}
+
+// =====================================================================
+// CHANGE TABS
+// =====================================================================
+function renderChangeTabs(){
+  const tabs=document.getElementById('change-tabs');
+  tabs.innerHTML='';
+  OPPORTUNITIES.forEach(o=>{
+    const btn=document.createElement('button');
+    btn.className='change-tab'+(state.activeChangeTab===o.id?' active':'');
+    btn.textContent=o.name;
+    btn.setAttribute('role','tab');
+    btn.setAttribute('aria-selected',state.activeChangeTab===o.id);
+    btn.onclick=()=>{
+      state.activeChangeTab=o.id;
+      document.querySelectorAll('.change-tab').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-selected','false');});
+      btn.classList.add('active');btn.setAttribute('aria-selected','true');
+      renderChangeCards();
+    };
+    tabs.appendChild(btn);
+  });
+  renderChangeCards();
+}
+
+function renderChangeCards(){
+  const cards=document.getElementById('change-cards');
+  const investment=inv(state.activeChangeTab);
+  cards.innerHTML='';
+  [
+    {id:'market',icon:'🏪',label:'Mercado',sub:'Análisis externo'},
+    {id:'finance',icon:'💰',label:'Números',sub:'Análisis financiero'},
+    {id:'capacity',icon:'🏢',label:'Capacidades',sub:'Análisis interno'},
+  ].forEach(dim=>{
+    const btn=document.createElement('button');
+    btn.className='change-card'+(investment.changedBy===dim.id?' marked':'');
+    btn.setAttribute('aria-pressed',investment.changedBy===dim.id);
+    btn.innerHTML=`<div class="cc-icon">${dim.icon}</div><div class="cc-label">${dim.label}</div><div class="cc-sub">${dim.sub}</div>`;
+    btn.onclick=()=>{
+      investment.changedBy=dim.id;
+      renderChangeCards();
+      announce(`Marcado: ${dim.label} cambió más la decisión para ${opp(state.activeChangeTab).name}`);
+      saveState();
+    };
+    cards.appendChild(btn);
+  });
+}
+
+// =====================================================================
+// COMPARISON
+// =====================================================================
+function renderComparison(){
+  const el=document.getElementById('comparison-table');
+  let html='<table style="width:100%;border-collapse:collapse;font-size:.85rem"><thead><tr><th style="text-align:left;padding:.3rem .5rem;border-bottom:1px solid rgba(255,255,255,.2)">Oportunidad</th><th style="padding:.3rem .5rem;border-bottom:1px solid rgba(255,255,255,.2)">Intuición (R0)</th><th style="padding:.3rem .5rem;border-bottom:1px solid rgba(255,255,255,.2)">Final (R3)</th><th style="padding:.3rem .5rem;border-bottom:1px solid rgba(255,255,255,.2)">Δ</th></tr></thead><tbody>';
+  OPPORTUNITIES.forEach(o=>{
+    const i=inv(o.id);
+    const diff=i.r3-i.r0;
+    const diffStr=diff>0?`+${diff}`:diff<0?`${diff}`:'=';
+    const color=diff>0?'#6ee7b7':diff<0?'#fca5a5':'#d1d5db';
+    html+=`<tr><td style="padding:.3rem .5rem;border-bottom:1px solid rgba(255,255,255,.1)">${o.name}</td><td style="padding:.3rem .5rem;text-align:center;border-bottom:1px solid rgba(255,255,255,.1)">${i.r0}</td><td style="padding:.3rem .5rem;text-align:center;border-bottom:1px solid rgba(255,255,255,.1)">${i.r3}</td><td style="padding:.3rem .5rem;text-align:center;color:${color};font-weight:700;border-bottom:1px solid rgba(255,255,255,.1)">${diffStr}</td></tr>`;
+  });
+  html+='</tbody></table>';
+  el.innerHTML=html;
+}
+
+// =====================================================================
+// DOTS / PROGRESS
+// =====================================================================
+function updateDots(){
+  const dots=['dot-0','dot-1','dot-2','dot-3','dot-4'];
+  dots.forEach((id,i)=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    el.classList.remove('active','done');
+    if(i<state.round) el.classList.add('done');
+    else if(i===state.round) el.classList.add('active');
+  });
+  document.getElementById('round-label').textContent=ROUND_LABELS[state.round]||ROUND_LABELS[0];
+  updateDash();
+}
+
+// =====================================================================
+// REVEAL ANSWER
+// =====================================================================
+function revealAnswer(){
+  document.getElementById('answer-reveal').classList.add('open');
+  document.getElementById('btn-reveal-answer').textContent='✓ Respuesta revelada';
+  document.getElementById('btn-reveal-answer').disabled=true;
+}
+
+function selectDim(btn){
+  document.querySelectorAll('.dim-btn').forEach(b=>{b.classList.remove('selected-dim');b.setAttribute('aria-pressed','false');});
+  btn.classList.add('selected-dim');
+  btn.setAttribute('aria-pressed','true');
+  state.activeDim=btn.dataset.dim;
+  announce('Seleccionado: '+btn.textContent);
+  saveState();
+}
+
+
+// =====================================================================
+// V2 OVERRIDES: comparison matrix, editable rounds, staged closure
+// =====================================================================
+
+function ensureV2State(){
+  if(!state.finalStage) state.finalStage='decision';
+  // Older saved versions may have reached a revealed round while still marked confirmed.
+  // From V2 onward, a newly opened analytical round is editable until the learner confirms it.
+}
+
+function matrixAnalysisHtml(o,type){
+  const r=o.rounds[type];
+  if(!r) return '';
+  let html='';
+  if(r.items){
+    html+='<ul class="matrix-list">'+r.items.map(it=>`<li>${it}</li>`).join('')+'</ul>';
+  }
+  if(r.breakeven){
+    html+=`<div class="matrix-be"><strong>Punto de equilibrio:</strong><br>${r.breakeven.formula}${r.breakeven.note?`<br><span style="color:var(--gray-500)">${r.breakeven.note}</span>`:''}</div>`;
+  }
+  if(r.capabilities){
+    html+='<div class="matrix-cap">';
+    r.capabilities.forEach(([name,level,note])=>{
+      html+=`<span>${name}</span><strong class="${capClass(level)}">${note||capLabel(level)}</strong>`;
+    });
+    html+='</div>';
+  }
+  html+=`<div class="matrix-question">${r.question}</div>`;
+  return html;
+}
+
+function investmentDeltaHtml(investment){
+  if(state.round===0 || state.round>3) return '<span id="delta-'+investment.id+'" class="invest-delta delta-neutral" style="visibility:hidden">= 0</span>';
+  const prev=investment['r'+(state.round-1)];
+  const diff=investment.current-prev;
+  if(diff>0) return `<span id="delta-${investment.id}" class="invest-delta delta-up" aria-label="Aumento de ${diff} puntos">▲ +${diff}</span>`;
+  if(diff<0) return `<span id="delta-${investment.id}" class="invest-delta delta-down" aria-label="Reducción de ${Math.abs(diff)} puntos">▼ ${diff}</span>`;
+  return `<span id="delta-${investment.id}" class="invest-delta delta-neutral" aria-label="Sin cambio">= 0</span>`;
+}
+
+function renderCards(){
+  const grid=document.getElementById('cards-grid');
+  grid.className='comparison-table-wrap';
+  grid.innerHTML='';
+  if(state.round===4) return;
+
+  const editable=!state.confirmed;
+  const colTypes=[];
+  if(state.round>=1) colTypes.push('external');
+  if(state.round>=2) colTypes.push('financial');
+  if(state.round>=3) colTypes.push('internal');
+  const colLabels={external:'Análisis externo',financial:'Análisis financiero',internal:'Análisis interno'};
+
+  const table=document.createElement('table');
+  table.className='opportunity-matrix';
+  table.setAttribute('aria-label','Comparación de oportunidades de inversión');
+  table.innerHTML=`
+    <caption>${state.round===0?'Compara las ideas y distribuye tus 100 puntos.':'Compara la evidencia acumulada y reasigna tus puntos antes de confirmar la ronda.'}</caption>
+    <thead><tr>
+      <th scope="col">Empresa / oportunidad</th>
+      <th scope="col">Idea</th>
+      ${colTypes.map(t=>`<th scope="col">${colLabels[t]}</th>`).join('')}
+      <th scope="col">Inversión actual</th>
+    </tr></thead><tbody></tbody>`;
+  const tbody=table.querySelector('tbody');
+
+  OPPORTUNITIES.forEach(o=>{
+    const investment=inv(o.id);
+    const tr=document.createElement('tr');
+    tr.innerHTML=`
+      <td><div class="matrix-company">${o.name}</div></td>
+      <td><div class="matrix-pitch">${o.pitch}</div></td>
+      ${colTypes.map(t=>`<td>${matrixAnalysisHtml(o,t)}</td>`).join('')}
+      <td class="matrix-invest">
+        <div class="invest-controls">
+          <button class="btn-adjust" onclick="adjustInv('${o.id}',-5)" aria-label="Reducir 5 puntos en ${o.name}" ${editable?'':'disabled'}>−5</button>
+          <span class="invest-value" id="inv-val-${o.id}" aria-live="polite">${investment.current}</span>
+          ${investmentDeltaHtml(investment)}
+          <button class="btn-adjust" onclick="adjustInv('${o.id}',5)" aria-label="Agregar 5 puntos a ${o.name}" ${editable?'':'disabled'}>+5</button>
+        </div>
+        <input type="range" id="inv-${o.id}" min="0" max="100" step="5" value="${investment.current}" class="invest-slider"
+          aria-label="Puntos para ${o.name}" oninput="setInv('${o.id}',+this.value)" ${editable?'':'disabled'}>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+  grid.appendChild(table);
+}
+
+function updateInvestmentDisplay(id){
+  const investment=inv(id);
+  const val=document.getElementById('inv-val-'+id);
+  if(val) val.textContent=investment.current;
+  const slider=document.getElementById('inv-'+id);
+  if(slider && +slider.value!==investment.current) slider.value=investment.current;
+  const d=document.getElementById('delta-'+id);
+  if(d && state.round>0 && state.round<4){
+    const diff=investment.current-investment['r'+(state.round-1)];
+    d.className='invest-delta '+(diff>0?'delta-up':diff<0?'delta-down':'delta-neutral');
+    d.textContent=diff>0?`▲ +${diff}`:diff<0?`▼ ${diff}`:'= 0';
+  }
+}
+
+function adjustInv(id, delta){
+  if(state.confirmed || state.round>3) return;
+  const investment=inv(id);
+  const newVal=Math.max(0,Math.min(100,investment.current+delta));
+  const newTotal=(totalUsed()-investment.current)+newVal;
+  if(newTotal>100){
+    showAlert('No puedes superar los 100 puntos de inversión. Tienes '+available()+' disponibles.');
+    return;
+  }
+  hideAlert();
+  investment.current=newVal;
+  updateDash();
+  updateInvestmentDisplay(id);
+  announce(`${opp(id).name}: ${newVal} puntos`);
+  saveState();
+}
+
+function setInv(id, val){
+  if(state.confirmed || state.round>3) return;
+  const investment=inv(id);
+  const clamped=Math.max(0,Math.min(100,val));
+  const newTotal=(totalUsed()-investment.current)+clamped;
+  if(newTotal>100){
+    showAlert('No puedes superar los 100 puntos. Reduce otra oportunidad primero.');
+    const slider=document.getElementById('inv-'+id);
+    if(slider) slider.value=investment.current;
+    return;
+  }
+  hideAlert();
+  investment.current=clamped;
+  updateDash();
+  updateInvestmentDisplay(id);
+  saveState();
+}
+
+function renderControls(){
+  const row=document.getElementById('controls-row');
+  const sec=document.getElementById('controls-secondary');
+  row.innerHTML=''; sec.innerHTML='';
+  if(state.round===4) return;
+
+  if(!state.confirmed){
+    const btn=document.createElement('button');
+    btn.className='btn-primary';
+    btn.textContent=ROUND_CONFIRM_LABELS[state.round]||'Confirmar ronda';
+    btn.onclick=(state.round===0?confirmRound:confirmRevealRound);
+    row.appendChild(btn);
+    return;
+  }
+  if(state.round<3){
+    const btn=document.createElement('button');
+    btn.className='btn-reveal';
+    btn.textContent=REVEAL_LABELS[state.round+1]||'Abrir siguiente análisis';
+    btn.onclick=revealNextRound;
+    row.appendChild(btn);
+    return;
+  }
+  const btn=document.createElement('button');
+  btn.className='btn-primary';
+  btn.textContent='Ir a la decisión estratégica final →';
+  btn.onclick=finishActivity;
+  row.appendChild(btn);
+}
+
+function confirmRound(){
+  state.investments.forEach(i=>{i.r0=i.current;});
+  state.confirmed=true;
+  state.round=0;
+  showFeedback('Inversión inicial guardada. Ahora abre el análisis externo y decide si mantienes o cambias tu asignación.');
+  renderControls(); renderCards(); updateDots();
+  announce('Inversión inicial confirmada.');
+  saveState();
+}
+
+function revealNextRound(){
+  if(state.round>=3) return;
+  state.round++;
+  state.revealed=true;
+  state.confirmed=false; // critical V2 change: every analytical round is editable
+  hideAlert();
+  renderCards(); renderControls(); updateDots();
+  showFeedback(ROUND_FEEDBACK[state.round]+' Puedes cambiar libremente tu inversión antes de confirmar esta ronda.');
+  announce(`${ROUND_LABELS[state.round]}. La inversión vuelve a estar editable.`);
+  saveState();
+}
+
+function confirmRevealRound(){
+  const rKey='r'+state.round;
+  state.investments.forEach(i=>{i[rKey]=i.current;});
+  state.confirmed=true;
+  renderControls(); renderCards(); updateDots();
+  showFeedback(state.round<3?`Ronda ${state.round} guardada. Abre el siguiente análisis cuando estés listo.`:'Análisis interno confirmado. Ya puedes pasar a la decisión estratégica final.');
+  announce(`Ronda ${state.round} confirmada.`);
+  saveState();
+}
+
+function hideLearningStages(){
+  ['final-decision','decision-evolution','final-stage-controls','concept-map','change-section','transition-question','badge-section','metacog-stage-controls','class-start-section'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.classList.remove('open');
+  });
+}
+
+function applyPhaseVisibility(){
+  const inFinal=state.round===4;
+  ['intro','opportunity-cards','round-controls'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.classList.toggle('hidden',inFinal);
+  });
+  hideLearningStages();
+  if(!inFinal) return;
+  ensureV2State();
+
+  if(state.finalStage==='decision'){
+    document.getElementById('final-decision').classList.add('open');
+    document.getElementById('decision-evolution').classList.add('open');
+    document.getElementById('final-stage-controls').classList.add('open');
+    renderFinalDecision(); renderEvoChart(); renderFinalStageControls();
+  } else if(state.finalStage==='metacognition'){
+    document.getElementById('concept-map').classList.add('open');
+    document.getElementById('change-section').classList.add('open');
+    document.getElementById('transition-question').classList.add('open');
+    document.getElementById('badge-section').classList.add('open');
+    document.getElementById('metacog-stage-controls').classList.add('open');
+    renderConceptMap(); renderChangeTabs(); renderComparison();
+    if(state.activeDim){
+      const btn=document.querySelector(`.dim-btn[data-dim="${state.activeDim}"]`);
+      if(btn){btn.classList.add('selected-dim');btn.setAttribute('aria-pressed','true');}
+    }
+  } else if(state.finalStage==='question'){
+    document.getElementById('class-start-section').classList.add('open');
+  }
+}
+
+function finishActivity(){
+  if(!state.confirmed){
+    showAlert('Confirma primero la inversión de la ronda de análisis interno.'); return;
+  }
+
+  // Una oportunidad con 0 puntos en la ronda final queda fuera de la decisión estratégica.
+  state.investments.forEach(i=>{
+    if(i.r3<=0){
+      i.decision=null;
+      state.finalDecisions[i.id]=null;
+    }
+  });
+
+  state.round=4;
+  state.finalStage='decision';
+  hideFeedback(); hideAlert();
+  updateDots(); applyPhaseVisibility();
+  window.scrollTo({top:0,behavior:'smooth'});
+  announce('Fase final: toma una decisión estratégica para las oportunidades con inversión positiva y revisa la evolución de tu inversión.');
+  saveState();
+}
+
+function renderFinalStageControls(){
+  const eligible=state.investments.filter(i=>i.r3>0);
+  const all=eligible.every(i=>i.decision!==null);
+  const btn=document.getElementById('btn-to-metacog');
+  const hint=document.getElementById('final-stage-hint');
+
+  if(btn) btn.disabled=!all;
+  if(hint){
+    if(eligible.length===0){
+      hint.textContent='No mantuviste inversiones con puntos positivos. Puedes continuar directamente al cierre metacognitivo.';
+    } else if(all){
+      hint.textContent='Decisiones completas. Ahora reconstruye qué información cambió tu criterio.';
+    } else {
+      const pending=eligible.filter(i=>i.decision===null).length;
+      hint.textContent=`Completa ${pending} ${pending===1?'decisión estratégica pendiente':'decisiones estratégicas pendientes'} para continuar.`;
+    }
+  }
+}
+
+function checkAllDecisions(){
+  const eligible=state.investments.filter(i=>i.r3>0);
+  const all=eligible.every(i=>i.decision!==null);
+  if(all){
+    state.decisionChanged=state.investments.some(i=>i.r0!==i.r3);
+  }
+  renderFinalStageControls();
+  saveState();
+}
+
+function goToMetacognition(){
+  const eligible=state.investments.filter(i=>i.r3>0);
+  if(!eligible.every(i=>i.decision!==null)) return;
+  state.finalStage='metacognition';
+  applyPhaseVisibility(); updateDots();
+  window.scrollTo({top:0,behavior:'smooth'});
+  announce('Cierre metacognitivo: reconstruye la ruta del Opportunity Analysis.');
+  saveState();
+}
+
+function goToClassQuestion(){
+  state.finalStage='question';
+  applyPhaseVisibility(); updateDots();
+  window.scrollTo({top:0,behavior:'smooth'});
+  announce('Pregunta final para iniciar la clase.');
+  saveState();
+}
+
+function updateDots(){
+  const dots=['dot-0','dot-1','dot-2','dot-3','dot-4'];
+  dots.forEach((id,i)=>{
+    const el=document.getElementById(id); if(!el) return;
+    el.classList.remove('active','done');
+    if(i<state.round) el.classList.add('done'); else if(i===state.round) el.classList.add('active');
+  });
+  let label=ROUND_LABELS[state.round]||ROUND_LABELS[0];
+  if(state.round===4){
+    ensureV2State();
+    label=state.finalStage==='decision'?'Final — Decisión estratégica':state.finalStage==='metacognition'?'Cierre metacognitivo':'Pregunta de inicio';
+  }
+  document.getElementById('round-label').textContent=label;
+  updateDash();
+}
+
+function render(){
+  ensureV2State();
+  renderCards(); renderControls(); updateDots();
+  applyPhaseVisibility();
+}
+
+// =====================================================================
+// RESET
+// =====================================================================
+function resetActivity(){
+  if(!confirm('¿Deseas reiniciar la actividad? Se perderá todo tu progreso.')) return;
+  try{localStorage.removeItem('oa_state');}catch(e){}
+  state={
+    round:0,confirmed:false,revealed:false,
+    investments:[
+      {id:'quickbite',r0:0,r1:0,r2:0,r3:0,current:0,decision:null,changedBy:null},
+      {id:'studyai',  r0:0,r1:0,r2:0,r3:0,current:0,decision:null,changedBy:null},
+      {id:'campusbike',r0:0,r1:0,r2:0,r3:0,current:0,decision:null,changedBy:null},
+      {id:'ecorefill',r0:0,r1:0,r2:0,r3:0,current:0,decision:null,changedBy:null},
+    ],
+    finalDecisions:{quickbite:null,studyai:null,campusbike:null,ecorefill:null},
+    decisionChanged:false,activeDim:null,activeChangeTab:'quickbite',finalStage:'decision'
+  };
+  // Hide final sections
+  ['final-decision','decision-evolution','final-stage-controls','concept-map','transition-question','badge-section','change-section','metacog-stage-controls','class-start-section'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){el.classList.remove('open');}
+  });
+  document.getElementById('formula-box').style.display='none';
+  hideFeedback();
+  hideAlert();
+  render();
+  announce('Actividad reiniciada.');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// =====================================================================
+// INIT
+// =====================================================================
+function render(){
+  renderCards();
+  renderControls();
+  updateDots();
+  if(state.round===4){
+    document.getElementById('final-decision').classList.add('open');
+    renderFinalDecision();
+    document.getElementById('decision-evolution').classList.add('open');
+    renderEvoChart();
+    document.getElementById('concept-map').classList.add('open');
+    renderConceptMap();
+    document.getElementById('change-section').classList.add('open');
+    renderChangeTabs();
+    document.getElementById('transition-question').classList.add('open');
+    renderComparison();
+    document.getElementById('badge-section').classList.add('open');
+    if(state.activeDim){
+      const btn=document.querySelector(`.dim-btn[data-dim="${state.activeDim}"]`);
+      if(btn){btn.classList.add('selected-dim');btn.setAttribute('aria-pressed','true');}
+    }
+  }
+}
+
+(function init(){
+  const had=loadState();
+  render();
+  if(had && state.round>0){
+    showFeedback('Progreso restaurado. Continúa desde donde lo dejaste.');
+  }
+})();
+</script>
+</body>
+</html>
